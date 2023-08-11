@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block menu %} {% endblock %}
+{% block title %}  {{ quiz.name }} - Questões {% endblock %}
+
+<!-- Bloco destinado aos scripts para cada página  -->
+{% block scripts %} 
+ 
+    <script src="{% static 'js/disc.js' %}" defer> </script>
+{% endblock scripts %}
+
+{% block content %}
+
+<div class="container"> 
+    <div class="row bordered marcador"> 
+        <div class="col-sm mt-1 marcador-topo"> 
+            <h4 class="my-2"> Quiz: <span class="text-primary"> {{ quiz.name}} 
+                <span class="timer float-end"> {{ request.user}} </span> 
+            </h4>
+            <h5 class="my-2"> Questões: <span class="cabecalho" data-pk="{{ quiz.pk }}"
+                data-total="{{ quiz.number_of_questions}}"> {{ quiz.number_of_questions}} </span> 
+            <span class="timer float-end"> 00:00  </span> </h5>
+          
+        </div>
+            <div class="card border-dark marcador-container">
+                {% for q in questions %}
+                    <h4 class="card-header border-dark bg-primary text-white text-center mt-2" name="question"> {{ q.text }}? </h4> <hr>
+                    <form id="post-form">
+                        {% csrf_token %}
+                        <div class="card-body mt-0"> 
+                            {% for a in q.answer_set.all %}
+                                <h6 class="text-dark"> <label for="{{ q.text }}"> <b> {{ a.text }} </b> </label>   </h6>
+                                <select class="form-control" name="answer"> 
+                                    <option class="form-control" id="opDominante" name="opDominante"  value="1"> 1 </option>
+                                    <option class="form-control" id="opInfluente" name="opInfluente"  value="2"> 2 </option>
+                                    <option class="form-control" id="opEstavel"   name="opEstavel"    value="3"> 3 </option>
+                                    <option class="form-control" id="opCauteloso" name="opCauteloso"  value="4"> 4 </option>
+                                </select> <hr>
+                            {% endfor %}
+                        </div><!-- fim div card-body-->
+                    </form> 
+                {% endfor %} 
+                 
+                <!-- MENSAGENS DE ERRO VIA JS-->
+                 <div id="erro"> </div> 
+            
+            </div> <!-- fim div card -->
+            <div class="pagination marcador-container">
+                <div class="btn-group">
+                
+                    {% if questions.has_next %}
+                        <button class="form-group btn btn-success" type="button" 
+                        id="btnEnviar" onclick="capturaResposta()"> 
+                            Enviar 
+                        </button>
+                        <a href="?page={{ questions.next_page_number }}"> 
+                            <button class="form-group btn btn-primary" 
+                            type="submit" id="btnProxima"> Próxima 
+                        </button> 
+                        </a>
+                        <button type="button" class="form-group btn-info" id="btnPaginas"> 
+                            {{ questions.number }}<b> / </b>{{ questions.paginator.num_pages }} 
+                        </button>
+                        <button type="button" class="form-group btn btn-light"> 
+                            <a href="{% url 'quizes:index' %}"> 
+                            <i class="fa fa-home" aria-hidden="true"></i> Menu </a>
+                        </button>
+                    {% else %} <!-- -->
+                        <button type="button" class="form-group btn btn-success"
+                            data-toggle="modal" data-target="#quizResultModal" 
+                            id="btnFinaliza"> <i class="fa fa-user" aria-hidden="false"></i> Calcular
+                        </button>
+                        <button type="button" class="form-group btn btn-info"> 
+                            {{ questions.number }}<b> / </b>{{ questions.paginator.num_pages }} 
+                        </button>
+                        <button type="button" id="btnSalvar" class="form-group btn btn-primary"> 
+                            <i class="fa fa-plus-square" aria-hidden="false"></i> Salvar </button>
+                        <button type="button" class="form-group btn btn-light" id="btnRelatorio"> 
+                                <a href="{% url 'quizes:resultado' %}">
+                                <i class="fa fa-info" aria-hidden="false"></i> Relatório </a>
+                        </button> 
+                        <button type="button" class="form-group btn btn-warning"> 
+                            <a href="{% url 'quizes:index' %}">
+                                <i class="fa fa-home" aria-hidden="false"></i> Menu </a>
+                        </button> 
+                        <input type="hidden" id="Url" data-url="{% url 'quizes:resultado' %}" />
+                        
+                    {% endif %}  
+                </div>
+        </div> 
+    </div> <!-- fim Container-->
+
+
+ <!-- Modal para o DISC -->
+ <div class="modal fade" id="quizResultModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="dialog">
+      <div class="modal-content modal-content-centered">
+        <div class="modal-header">
+          <h6 class="modal-title text-center" id="exampleModalLabel">Relatório DISC - Seu perfil comportamental</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body-confirm">
+            <div class="h5  bg-danger   text-white text-center mb-1 mt-1" id="dominante">  </div> 
+            <div class="h5  bg-info     text-dark text-center mb-1 mt-1" id="influente"> </div> 
+            <div class="h5  bg-success  text-white text-center mb-1 mt-1" id="estavel"> </div> 
+            <div class="h5  bg-warning  text-center mb-1 mt-1" id="cauteloso"> </div> <hr class="divider">
+            <div class="h4 bg-primary text-white text-center mb-4 mt-4" id="maiorPerfil">  </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"> Retornar </button>
+          <button type="submit" id="start-button" class="btn btn-success"> Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock%} <!-- Fim block content -->
+{% block rodape %} {% endblock %}
+ 
+
+
+
+ 
+
+

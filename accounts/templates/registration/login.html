@@ -1,0 +1,61 @@
+{% extends 'base-login.html' %}
+{% load static %}
+
+{% block content %}
+
+<header class="masthead">
+    <div class="d-flex justify-content-center h-100">
+
+        <div class="user_card">
+            <div class="d-flex justify-content-center h-100">
+                <div class="brand_logo_container">
+                    <img src="{% static 'img/logo-200-40-Orange.png' %}" 
+                        alt="" width="100" height="40">
+                </div>
+            </div>  <!-- FIM content-center --> 
+            <br>
+            <h3 class="text-white text-center"> Seja bem-vindo! </h3> <br>
+            <div class="justify-content-center d-flex">      
+                <p class="text-white text-center "> Aqui encontrará tudo que precisa sobre o famoso 
+                    teste comportamentamental DISC. <br> Realize já o seu gratuitamente.
+                </p>
+             </div>
+             <hr>
+                <form method="post" class="form" autocomplete="off">
+                    {% csrf_token %}
+                    
+                    <div class="input-group mb-2">
+                        <label class="form-label input-group text-white" for="id_username">
+                            <i class="fas fa-user"> USUÁRIO: </i>
+                            </label>
+                        <input type="text" name="username" class="form-control">
+                    </div>
+                    
+                    <div class="input-group mb-2">
+                        <label class="form-label input-group text-white" for="id_password">
+                            <i class="fas fa-key"> SENHA: </i>   
+                            </label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+
+                    <button class="btn login_btn" type="submit"> Entrar </button> <hr>
+            
+                    <div class="mt-2">
+                        <div class="d-flex justify-content-center">
+                            Não possui uma conta?
+                            <a href="{% url 'novo-usuario' %}" class="ml-2 text-white"> Registre-se aqui...  </a>
+                            
+                        </div>
+                        <div class="d-flex justify-content-center mt-2 mb-2">
+                            Esqueceu sua senha? <a href="{% url 'password_reset' %}" 
+                            class="ml-2 text-white"> Recupere aqui... </a>
+                        </div>
+                    </div>
+                  
+                </form>
+        </div>   <!-- FIM CARD --> 
+ 
+    </div>
+    {% endblock %}
+    {% block lgpd %} {% endblock %}
+</header>

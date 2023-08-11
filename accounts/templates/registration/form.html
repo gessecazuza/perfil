@@ -1,0 +1,39 @@
+{% extends 'base-login.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<!-- <section class="page-section"> -->
+<header class="masthead">
+    <div class="container px-4 px-lg-5 h-100"> 
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8 col-xl-6 text-center">
+                <h3 class="text-white mt-0"> {{ titulo }} </h3>
+                <hr class="divider"/>
+                <h4 class="text-white mb-3"> É um prazer tê-lo conosco  </h4>
+            </div>
+        </div>
+   
+        <div class="row gx-4 gx-lg-5 marcador-cadastro">
+
+            {% bootstrap_messages %}
+           
+                <form action="{% url 'novo-usuario' %}" method="post" class="form" autocomplete="on">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    
+                    <div class="d-flex justify-content-center">
+                    {% buttons %}
+                        <button type="submit" class="btn btn-primary"> {{ botao }} </button>
+                    {% endbuttons %}
+                    </div>
+                </form>
+            
+        </div>    
+ 
+        {% bootstrap_javascript jquery='full' %}
+    
+    </div>
+</header>
+<!-- </section> -->
+{% endblock %}
