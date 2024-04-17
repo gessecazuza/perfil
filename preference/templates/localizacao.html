@@ -1,0 +1,38 @@
+{% extends 'base-login.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<header class="masthead">
+	<div class="container px-4 px-lg-5 h-100">
+        {% bootstrap_messages %}
+		<div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+			<div class="col-lg-8 align-self-end">
+				<h3 class="text-white font-weight-bold">  Dados do Terminal </h3>
+				<hr class="divider" />
+			</div>
+			<div class="col-lg-8 align-self-baseline text-dark marcador"> 
+	
+                <p> <b> Usuário: </b> {{ dados.usuario }} - <b> IP do Cliente: </b> {{ dados.ipTerminal }}</p>
+                    <p>  </p>
+                    <p> <b> Processador: </b> {{ dados.processador }} </p>
+                    <p> <b> Arquitetura (32/64): </b> {{ dados.arquitetura }} - </b> {{ dados.SO }} - {{ dados.VersaoOS }} </p>
+                    <p> <b> Navegador: </b> {{ dados.terminal }} - <b> Idioma: </b> {{ dados.idioma }} </p>
+                    <p> <b> País: </b> {{ dados.pais }} - <b> Cidade: </b> {{ dados.cidade }} </p>
+                    <hr class="divider" /> 
+                    <p> <b> Aceitou Termos Essenciais? </b> {{ dados.aceitouTermos }} </p>
+                    <p> <b> Aceitou Termos de Maketing? </b> {{ dados.marketing }} </p>
+                    <p> <b> Aceitou Termos Analíticos? </b> {{ dados.analiticos }} </p>
+                    <p> <b> Data/Aceitação: </b> {{ dados.now }} </p>
+                <hr class="divider" />
+                <p class="text-dark"> ** Conforme a <b> lei geral de proteção a dados (LGPD), </b> </p>
+                <p class="text-dark"> ** Neste mesmo equipamento foi registrado o termo de política de privacidade.</p>
+                <hr class="divider" />
+                <a class="btn btn-primary" href="{% url 'quizes:index' %}"> Menu </a>    
+			</div>
+		</div>
+	</div>
+</header>                     
+        
+    {% bootstrap_javascript jquery='full' %}
+{% endblock %}

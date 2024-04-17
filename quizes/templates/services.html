@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-section" id="services">
+	<div class="container px-4 px-lg-5">
+		<h2 class="text-center mt-0">A seu serviço</h2>
+		<hr class="divider" />
+		<div class="row gx-4 gx-lg-5">
+			<div class="col-lg-3 col-md-6 text-center">
+				<div class="mt-5">
+					<div class="mb-2">
+                        <i class="bi-gem fs-1 text-primary"> </i>
+                        
+                    </div>
+					<h3 class="h4 mb-2">Temas interessantes </h3>
+					<p class="text-muted mb-0"> Nossos temas são avaliados regularmente para mantê-los atraentes </p>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 text-center">
+				<div class="mt-5">
+					<div class="mb-2">
+                        <i class="bi-laptop fs-1 text-primary"> </i>
+                    </div>
+					<h3 class="h4 mb-2">Atualizados </h3>
+					<p class="text-muted mb-0"> Todas as questões são mantidas atualizadas para manter os assuntos atualizados. </p>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 text-center">
+				<div class="mt-5">
+					<div class="mb-2"><i class="bi-globe fs-1 text-primary"></i></div>
+					<h3 class="h4 mb-2"> Pronto para Publicar </h3>
+					<p class="text-muted mb-0">Você mesmo pode sugerir um tema e tê-lo publicado </p>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 text-center">
+				<div class="mt-5">
+					<div class="mb-2"><i class="bi-heart fs-1 text-primary"></i></div>
+					<h3 class="h4 mb-2">Feitos com carinho </h3>
+					<p class="text-muted mb-0">Seria mesmo atrante se não fosse feito pra você? </p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="page-section bg-dark text-white">
+    <div class="row gx-4 gx-lg-5 justify-content-center bg-dark">
+        <div class="col-lg-8 text-center">
+            <h2 class="text-white "> Calma que tem mais! </h2>
+            <hr class="divider divider-light" />
+            <p class="text-white mb-4"> Dispomos do famoso teste de perfil, o teste DISC. </p>
+            <p class="text-white mb-2"> Usado em diversos processos seletivos, treinamentos e formação de lideranças, tornou-se referência em grandes corporações.  </p>
+            <hr class="divider divider-light" />
+            <h3 class="text-white mt-4"> Você sabia... </h3>
+            <p class="text-white mt-3 mb-3"> Que gigantes mundias utilizam-se de testes de perfil para contratar, aperfeiçoar, promover e até demitir seus colaboradores? </p>
+            <hr class="divider divider-light" />
+            <a class="btn btn-primary btn-xl" href="{% url 'quizes:teste-disc' %}"> Veja mais sobre isso... </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+*.pyc
+*~
+__pycache__
+venv
+htmlcov
+db.sqlite3
+quizes.sqlite3
+.DS_Store
+*.pdf
+.coverage
+.coveragerc

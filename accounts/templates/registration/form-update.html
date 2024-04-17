@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<section class="page-section marcador-fundo" >
+    <div class="container px-4 px-lg-5">
+
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8 col-xl-6 text-center">
+                <h3 class="badge-dark text-center border"> {{ titulo }} </h3>
+                <hr class="divider" />
+            </div>
+        </div>
+
+        {% bootstrap_messages %}
+        <div class="row gx-4 gx-lg-5 marcador">
+        <form action="{% url 'atualizar-dados' %}" method="post" class="form" autocomplete="off">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+
+            <div class="form-group">
+                <label for="{{ form.personalidade.id_for_label }}">
+                    Perfil traçado (Via teste DISC):
+                </label>
+                <input type="text" name="personalidade" value="{{ form.instance.personalidade }}" 
+                    readonly class="form-control" style="background-color: #D2B48C;">
+            </div>
+            
+            {% buttons %}
+                <div class="justify-content-center d-flex">
+                    <button type="submit" class="btn btn-primary"> {{ botao }} </button>
+                </div>
+            {% endbuttons %}
+        </form>
+        </div>
+    </div>
+    {% bootstrap_javascript jquery='full' %}
+</section>
+{% endblock %}
+
+{% block scripts %} 
+ <!-- Plug-in mascaras do jquery -->
+<script src="{% static 'js/jquery.mask.min.js' %}"> </script>
+
+<script>
+    $(document).ready(function() {
+        /****** Função que valida 9 ou 8 dígitos com DDD **
+        https://igorescobar.github.io/jQuery-Mask-Plugin/docs.html ***/
+        
+        var validaFone = function (val) {
+            return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+        },
+        spOptions = {
+        onKeyPress: function(val, e, field, options) {
+            field.mask(validaFone.apply({}, arguments), options);
+            }
+        };
+        $("#id_nascimento").mask("00/00/0000");
+        $('#id_telefone').mask(validaFone, spOptions);   
+    });
+
+</script>
+{% endblock scripts %} 

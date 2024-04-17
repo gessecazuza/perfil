@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block menu %} {% endblock %}
+{% block title %}  {{ quiz.name }} - Questões {% endblock %}
+
+{% block content %}
+
+<div class="container px-4 px-lg-5"> 
+
+{%  if user.perfil.nome_completo %}
+
+    <div class="row gx-4 gx-lg-5 bordered marcador"> 
+        <div class="col-sm mt-1 marcador-topo"> 
+            <h4 class="my-2"> Quiz: <span class="text-primary"> {{ quiz.name}} 
+                <span class="timer float-end"> {{ request.user}} </span> 
+            </h4>
+            <h5 class="my-2"> Questões: <span class="cabecalho" data-pk="{{ quiz.pk }}"
+                data-time="{{ quiz.time}}"
+                data-index="{% url 'quizes:index' %}"
+                data-url="{% url 'result:resultado' %}" 
+                data-total="{{ quiz.number_of_questions}}"> {{ quiz.number_of_questions}}
+            </span> 
+            <span id="timer-box" class="timer float-end"> {{ quiz.time}}:00min </span> </h5>  
+        </div>
+       
+        <div class="card border-dark marcador-container">
+           
+            {% for q in questions %}
+                <h4 class="card-header border-dark bg-primary text-white text-center mt-2" name="question"> {{ q.text }}? </h4> <hr>
+                <form id="post-form">
+                    {% csrf_token %}
+                    <div class="card-body mt-0"> 
+                        {% for a in q.answer_set.all %}
+                            <h6 class="text-dark"> <label for="{{ q.text }}"> <b> {{ a.text }} </b> </label>   </h6>
+                            <select class="form-control" name="answer"> 
+                                <option class="form-control" id="opDominante" name="opDominante"  value="1"> 1 </option>
+                                <option class="form-control" id="opInfluente" name="opInfluente"  value="2"> 2 </option>
+                                <option class="form-control" id="opEstavel"   name="opEstavel"    value="3"> 3 </option>
+                                <option class="form-control" id="opCauteloso" name="opCauteloso"  value="4"> 4 </option>
+                            </select> <hr>
+                        {% endfor %}
+                    </div><!-- fim div card-body-->
+                </form> 
+            {% endfor %} 
+                 
+            <!-- MENSAGENS DE ERRO VIA JS-->
+            <div id="erro"> 
+                <div id="quiz" class="progress bg-secondary"  style="height: 30px;">
+                    <div class="progress-bar bg-success" id="myprogressBar" 
+                        role="progressbar" style="width: 1%;" 
+                        aria-valuenow="0" aria-valuemin="1" aria-valuemax="100"> 
+                    </div>
+                </div>
+            </div> 
+        </div> <!-- fim div card -->
+            <div class="justify-content-center d-flex marcador">
+                <div class="btn-group mt-1">
+                        {% if questions.has_next %}
+                            <button class="form-group btn btn-success" type="button" 
+                                id="btnEnviar" onclick="capturaResposta()">  <b> CONFIRMAR </b> 
+                            </button>
+                            <button type="button" class="form-group btn btn-info " id="btnPaginas"> 
+                                <b> {{ questions.number }} de {{ questions.paginator.num_pages }} </b>
+                            </button>
+                            <a href="?page={{ questions.next_page_number }}"> 
+                                <button class="form-group btn btn-warning" 
+                                    type="submit" id="btnProxima"> <b> PULAR </b> 
+                                </button> 
+                            </a>
+                            <button type="button" class="form-group btn btn-danger ml-1"> 
+                                <a href="{% url 'quizes:index' %}"> 
+                                <i class="fa fa-home" aria-hidden="true"></i><b> CANCELAR </b></a>
+                            </button>
+                        {% else %} 
+                            <button type="button" class="form-group btn btn-success"
+                                data-toggle="modal" data-target="#quizResultModal" 
+                                id="btnFinaliza"> <i class="fa fa-user" aria-hidden="false"></i> <b> FINALIZAR </b>
+                            </button>
+                            <button type="button" class="form-group btn btn-info"> 
+                                 <b> {{ questions.number }} / {{ questions.paginator.num_pages }} </b> 
+                            </button>
+                            <button type="button" id="btnSalvar" class="form-group btn btn-primary" 
+                                onclick="preparaSalvaDisc()"> <i class="fa fa-plus-square" aria-hidden="false"></i> 
+                               <b> GRAVAR </b></button>
+                            <button type="button" class="form-group btn btn-light" id="btnRelatorio"> 
+                                    <a href="{% url 'result:resultado' %}">
+                                    <i class="fa fa-info" aria-hidden="false"></i><b> PDF </b></a>
+                            </button> 
+                            <button type="button" class="form-group btn btn-dark ml-1"> 
+                                <a href="{% url 'quizes:index' %}">
+                                    <i class="fa fa-home" aria-hidden="false"></i> <b> MENU </b> </a>
+                            </button> 
+                            <input type="hidden" id="Url" data-url="{% url 'result:resultado' %}" />
+                        {% endif %}
+                </div>
+            </div>
+            <div class="col-sm mt-1 marcador-topo">
+                <ol> 
+                    <li> <h6 class="text-dark mt-2"> Responda conforme identifica-se com a pergunta. Conceito maior diz que mais encaixa-se com sua personalidade;  </h6> </li>
+                    <li> <h6 class="text-dark"> Defina apenas um valor. Exemplo: 1,2,3 ou 4. 
+                        Notas repetidas não são permitidas na mesma questão; </h6> </li>
+                    <li> <h6 class="text-dark"> É possível pular a alternativa, mas não será possível retornar; </h6> </li>
+                    <li> <h6 class="text-dark"> Para o cálculo completo de seu perfil, por favor responda à todas as questões. </h6> </li>
+                </ol> 
+            </div>
+        </div>
+
+    </div>  <!-- fim Container-->
+
+ <!-- Modal para o DISC -->
+ <div class="modal fade" id="quizResultModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="dialog">
+      <div class="modal-content modal-content-centered">
+        <div class="modal-header">
+          <h6 class="modal-title text-center" id="exampleModalLabel">Relatório DISC - Seu perfil </h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body-confirm">
+            <div class="h5  bg-danger   text-white text-center mb-1 mt-1" id="dominante">  </div> 
+            <div class="h5  bg-info     text-dark text-center mb-1 mt-1"  id="influente"> </div> 
+            <div class="h5  bg-success  text-white text-center mb-1 mt-1" id="estavel"> </div> 
+            <div class="h5  bg-warning  text-center mb-1 mt-1"            id="cauteloso"> </div> 
+            <hr class="divider">
+            <div class="h4 bg-primary text-white text-center mb-4 mt-4" id="maiorPerfil">  </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"> Retornar </button>
+          <button type="button" id="start-button" class="btn btn-success" data-dismiss="modal" 
+            onclick="preparaSalvaDisc()"> Salvar </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+
+<header class="masthead marcador-container">
+  {% include 'navbar-animada.html' %}
+    
+	<div class="container px-4 px-lg-5 h-100 marcador-topo">
+		<div class="row gx-4 gx-lg-5 justify-content-center  marcador">
+			<div class="col-lg-8 align-self-end">
+				
+                <h5 class="my-2"> Quiz: <span class="text-white"> {{ quiz.name}}
+                    <span class="timer float-end text-white"> Questões: {{ quiz.number_of_questions}} </span> 
+                 </h5>
+                 <h5 class="my-2"> 
+                     <span class="cabecalho" data-pk="{{ quiz.pk }}"
+                         data-time="{{ quiz.time}}"
+                         data-index="{% url 'quizes:index' %}"
+                         data-url="{% url 'result:resultado' %}" 
+                         data-total="{{ quiz.number_of_questions}}">
+                     </span> 
+            </div>             
+        </div>    
+        <div class="h5 bg-primary border text-center text-white mt-3"> ::ATUALIZAÇÃO CADASTRAL:: </div>
+            <hr class="divider">
+        
+        <div class="justify-content-center">
+            <br>
+            <h5 class="text-dark"> Caro(a) usuário(a), {{ request.user }}!</h5>
+            <br> <hr>
+            <ul>
+                <li> <h6> Para melhor precisão do teste comportamental DISC, faz-se necessário preencher todos os dados pessoais; </h6> </li>
+                <li> <h6> **Os dados: nome completo, nascimento, sexo, etnia (cor da pele), país e profissão são obrigatórios;</h6> </li>
+                <li> <h6> Por favor, complete seu cadastro para prosseguir,
+                <a href="{% url 'atualizar-dados' %}"><b>  acessando aqui </b> </a> ou em <u> atualizar </u>abaixo; </h6> </li> 
+                <li> <h6> Caso não concorde, por favor
+                    <a href="{% url 'quizes:ListaQuizes' %}"> <b> clique aqui </b> </a> para voltar ou em <u> cancelar </u>abaixo. </h6>
+                </li>
+                <br> 
+                <hr> 
+                    <h6 class="text-center text-dark"> **Estes dados alimentarão um modelo de aprendizado de máquina 
+                    que poderá lhe ajudar em decisões de sua carreira profissional futuramente. </h6> 
+            </ul>    
+        </div>
+        <hr>
+        <br>
+        <div class="marcador">
+            <div class="justify-content-center d-flex mb-1">
+                <a class="btn btn-success btn-lg" href="{% url 'atualizar-dados' %}"> ATUALIZAR </a>
+                <a class="btn btn-danger btn-lg ml-1" href="{% url 'quizes:ListaQuizes' %}"> CANCELAR </a>
+            </div>
+        </div>
+    </div>
+</header>     
+{% endif %}
+
+{% endblock%} <!-- Fim block content -->
+
+{% block rodape %} {% endblock %}
+
+<!-- Bloco destinado aos scripts para cada página  -->
+{% block scripts %} 
+    <!-- A ordem deve ser esta porque ele deve ler primeiro o jQuery -->
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}">          </script>
+    <script src="{% static 'js/bootstrap.min.js' %}">   </script>
+    <!--  <script src="{% static 'js/scripts.js.js' %}" defer></script>  -->
+
+    <!-- Plug-in datable do jquery -->
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.22/datatables.min.js"></script>
+
+    <script src="{% static 'js/disc.js' %}" defer> </script>
+{% endblock scripts %}
+
+
+ 
+
+
