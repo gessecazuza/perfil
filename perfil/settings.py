@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'result.apps.ResultConfig',
     'personality.apps.PersonalityConfig',
     'preference.apps.PreferenceConfig',
+     'admin_honeypot', # Aula 162. Gerar Falso painel de adminsitração
 ]
 
 
