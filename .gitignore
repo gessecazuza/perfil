@@ -46,7 +46,6 @@ MANIFEST
 
 #Arquivos de variáveis de deploy
 .env
-.env-sample
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
