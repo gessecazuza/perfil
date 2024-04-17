@@ -182,7 +182,7 @@ class Perfil(models.Model):
     sexo = models.CharField(max_length=5, choices=TIPO_SEXO_CHOICES, default="", verbose_name="Sexo reconhecido:")
     cpf = models.CharField(max_length=14, null=True, verbose_name="CPF:")
     nascimento = models.DateField(null=True, verbose_name="Nascimento (dd/mm/aaaa):")
-    telefone = models.CharField(max_length=20, null=True, verbose_name="Telefone:")
+    telefone = models.CharField(max_length=20, null=True, verbose_name="Telefone (Apenas dígitos - com DDD):")
     profissao = models.CharField(max_length=70, null=True, choices=PROFISSOES_CHOICES,verbose_name="Profissão/Área de Atuação:", default="")
     pais = models.CharField(max_length=50, choices=PAISES_CHOICES, default="OUTRO")
     raca_cor = models.CharField(max_length=50, choices=CORES_PELE_CHOICES, verbose_name="Cor da pele reconhecida:", default="Outro") 

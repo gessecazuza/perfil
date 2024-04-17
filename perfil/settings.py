@@ -10,8 +10,28 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
-import os
+""" Sessão 26 - CONFIGURAÇÕES DE SEGURANÇA -
+    161. Armazene as informações confidenciais do seu site com segurança
+
+    1. Ocultar informações importantes do projeto em arquivo .env ou .ini que não devem ser entregues no deploy.
+        Ex.: A SECRET_KEY, o tipo de DEBUG, o nome do BD, etc.
+    2. Podemos usar um pacote para auxiliar nisso: pip install python-decouple, que permite gerar 
+        uma separação estrita entre configurações e código (https://pypi.org/project/python-decouple/);
+    3. Importar o pacote (from decouple import config);
+    4. Criar um novo arquivo e nomeá-lo como ponto env, na raiz do projeto;
+    5. Copiar as variáveis que serão protegidas, sem espaços em branco: 
+        SECRET_KEY, DEBUG, BD, Config de Email
+    6. Para acessar as variáveis, usar: SECRET_KEY = config('SECRET_KEY'), por exemplo.
+    7. Incluir este arquivo .env dentro do arquivo gitignore NÃO enviar o código para o GitHub;
+    8. Criar um segundo arquivo de exemplo para demonstrar apenas as chaves pra quem o receber .env-sample;
+        Remover os valores da chaves que servirão como amostra apenas para um download, por exemplo.
+        > Podemos enviar esse código de exemplo de ambiente, arquivo de exemplo, para o GitHub (.env-sample).
+"""
+
+from pathlib import Path                                    # Padrão para acessar o caminho da aplicação
+import os                                                   # Acessar o Sistema Operacional
+from django.contrib.messages import constants as messages   # Sistema de mensagens
+from decouple import config                                 # Pacote de configuração de segurança
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,19 +40,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=$8!^#l+kmv&jd(26yk16ixn8!s7pd6gg^yf_i4mw+@2$6a=nm'
+SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-#ALLOWED_HOSTS = ['*'] 127.0.0.1
-
-DEBUG = True
-#ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+## 1. Se não tiver valor, será True. 2. Precisa receber um Booleano  
+DEBUG = config('DEBUG', default=True, cast=bool) 
 ALLOWED_HOSTS = ['*']
 
 # Application definition
-
 INSTALLED_APPS = [
        
    #usar o login padrão - Exigido como primeiro app da lista 
@@ -57,6 +71,12 @@ INSTALLED_APPS = [
     'preference.apps.PreferenceConfig',
 ]
 
+
+""" Sessão 26 - Segurança - Aula 163. Sair automaticamente após inatividade
+    1.> pip install django-session-timeout 
+    2. Adicionar a chave MIDDLEWARE: 'django_session_timeout.middleware.SessionTimeoutMiddleware',
+    3. Criar a variável de sessão com o tempo: SESSION_EXPIRE_SECONDS = 3600  # 1 hora de sessão
+"""
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,7 +87,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Definirá um is_ajax método em cada solicitação antes de ser recebido pela exibição.
     'quizes.middlewares.AjaxMiddleware', 
+    'django_session_timeout.middleware.SessionTimeoutMiddleware', ## Determinar tempo para sessão
 ]
+
+############### Controle de sessão ###################################
+SESSION_EXPIRE_SECONDS = 3600               # 1 hora de sessão: 3600s
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   # Derruba se tiver inativo
+SESSION_TIMEOUT_REDIRECT = 'accounts/login' # Redirecionar ao login
 
 ROOT_URLCONF = 'perfil.urls'
 
@@ -95,13 +121,26 @@ WSGI_APPLICATION = 'perfil.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'quizes.sqlite3',
-    }
-}
+# Database Configuration
 
+if 'RDS_DB_NAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 ''' ######## POSTGRESQL13
 DATABASES = {
@@ -140,7 +179,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -163,7 +201,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #AUTH_USER_MODEL = 'usuarios.CustomUsuario'
 
 #Enviar email com token via terminal
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 '''
 EMAIL_HOST = 'localhost'
@@ -171,6 +209,13 @@ EMAIL_HOST_USER = 'no-reply@quizcenter.com.br'
 EMAIL_USER_TSL = True
 EMAIL_HOST_PASSWORD = 'minhasenha'
 '''
+
+# SMTP configuraçao de segurança
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 
 ### Configurações de autenticação - São três constantes exigidas
 LOGIN_URL = 'login'

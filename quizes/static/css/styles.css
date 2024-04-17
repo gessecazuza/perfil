@@ -11559,6 +11559,7 @@ header.masthead h1, header.masthead .h1 {
 }
 
 /*********************************  CSS LOGIN.CSS **********************/
+/***
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
@@ -11569,6 +11570,7 @@ header.masthead {
   background-attachment: scroll;
   background-size: cover;
 }
+***/
 
 .marcador-fundo{
   padding-top: 10rem;
@@ -11684,5 +11686,173 @@ header.masthead {
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: cover;
+}
+/************************************/
+
+.marcador{
+  /*background: skyblue;
+  background: royalblue;
+  background-color: var(--bs-gray-dark); */
+  background-color: #778899;  /* cinza ardósia #778899; #f4623a */
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 5px;
+  font-size: 12px;
+}
+
+.marcador-topo{
+  background-color: var(--bs-gray-500);
+  color: #000;
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.marcador-container{
+  /*background: royalblue; border: 1px solid #36ae26; */
+  /*background-color: #ffffff96;*/
+  background-color: var(--bs-gray-500);
+  backdrop-filter: blur(10px); /*efeito vidro transparente*/
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 5px;
+  font-size: 11px;
+}
+
+.marcador-cadastro{
+  /*background: skyblue;
+  background: royalblue;
+  background-color: #778899;  /* cinza ardósia #778899; #f4623a */
+  background-color: var(--bs-gray-dark);
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 10px;
+  font-size: 12px;
+  justify-content: center;
+  color: #fff; 
+}
+/* form-text */
+.form-text{
+  color: #fff;
+
+}
+
+/*********************************  CSS LOGIN.CSS **********************/
+header.masthead {
+  padding-top: 10rem;
+  padding-bottom: calc(10rem - 4.5rem);
+  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), 
+  url("../img/bg-masthead.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.marcador-fundo{
+  padding-top: 10rem;
+  padding-bottom: calc(10rem - 4.5rem);
+  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), 
+  url("../img/bg-masthead.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.user_card {
+  /** **/
+  height: 350px;
+  width: 400px;
+ 
+  margin-top: auto;
+  margin-bottom: auto;
+  background:  #f4623a; /* #f39c12; 00006f */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+
+}
+
+.register {
+  height: 550px;
+  width: 500px;
+  margin-top: auto;   
+  margin-bottom: auto;
+  background:  #f4623a; /* #f39c12; 00006f */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+
+}
+.brand_logo_register {
+  position: absolute;
+  height: 70px;
+  width: 100px;
+  top: -20px;
+  border-radius: 50%;
+  background: #f4623a; /* #60a3bc*/
+  padding: 5px;
+  text-align: center;
+}
+
+.brand_logo_container {
+  position: relative;
+  height: 70px;
+  width: 130px;
+  top: -20px;
+  border-radius: 50%;
+  background:  #f4623a; /* 60a3bc */
+  padding: 10px;
+  text-align: center;
+}
+.brand_logo {
+  /*position: absolute;*/
+  height: 100px;
+  width: 100px;
+  border-radius: 50%; 
+  /*border: 2px solid white; */
+  padding: 0px;
+}
+.form_container {
+  margin-top: 100px;
+}
+.login_btn {
+  width: 100%;
+  background: #0b065b !important; /* #110a8e; #f4623a; #495057; #120a8f; #0b065b 25% escuro; #343a40 */
+  color: white !important;
+}
+.login_btn:focus {
+  box-shadow: none !important;
+  outline: 0px !important;
+}
+.login_container {
+  padding: 0 2rem;
+}
+.input-group-text {
+  background: #c0392b !important;
+  color: white !important;
+  border: 0 !important;
+  border-radius: 0.25rem 0 0 0.25rem !important;
+}
+.input_user,
+.input_pass:focus {
+  box-shadow: none !important;
+  outline: 0px !important;
+}
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+  background-color: #c0392b !important;
 }
 /************************************/

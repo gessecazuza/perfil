@@ -21,22 +21,14 @@ class UsuarioCreate(CreateView):
     form_class = UsuarioForm
     success_url = reverse_lazy('login')
 
-    #Valida o formulário antes de salvar 
+    ## Valida o formulário antes de salvar. Gera o perfil em branco para cada novo usuário 
     def form_valid(self, form):
-        '''Antes de criar, podemos definir a que grupo pertence'''
-        #grupo = get_object_or_404(Group, name="Docente")
-        
-        #Valida e Cria o usuário de fato (objeto)
-        url = super().form_valid(form)
-        
-        '''Salva no grupo indicado'''
-        #self.object.groups.add(grupo)
-        self.object.save()
-        
-        #Cria um perfil para o usuário com os campos padrões nulos (null=True)
-        Perfil.objects.create(usuario=self.object)
-        return url  #devolva à url do reverse_lazy
-    
+
+        url = super().form_valid(form)              # Pega a URL em uso nesse momento
+        self.object = form.save()                   # Salva o formulário e pega o objeto usuário criado
+        Perfil.objects.create(usuario=self.object)  # Cria um perfil em branco para o usuário
+        return url                                  # Retorna a URL de sucesso pelo reverse_lazy('login')
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['titulo'] = "REGISTRO DE NOVO USUARIO"
@@ -49,14 +41,14 @@ class PerfilUpdate(UpdateView):
     model = Perfil
     fields = ["nome_completo", "sexo", "nascimento", "profissao", 
               "telefone", "raca_cor", "pais"]
-    success_url = reverse_lazy("quizes:index")
+    success_url = reverse_lazy("quizes:index") # quizes:index
 
-    # obter um Perfil já existente ou retornar um erro 404 caso ele não seja encontrado. 
+    # Obter um Perfil já existente ou retornar um erro 404 caso ele não seja encontrado. 
     def get_object(self, queryset=None):
         self.object = get_object_or_404(Perfil, usuario=self.request.user)
         return self.object
 
-    #Devolve ao template um dicionário (como request.render())
+    # Devolve ao template um dicionário (como request.render())
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["perfil"] = self.object  # Aqui definimos a chave 'perfil' no contexto

@@ -1,0 +1,72 @@
+{% load static %}
+
+<footer class="mt-auto mb-auto">
+
+    <div class="container-fluid bg-primary text-center p-3">
+
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <img src="{% static 'img/logo-200-40-Orange.png' %}"
+                    height="40" width="100" alt="">
+                    <p class="text-center text-white text-uppercase mt-2"> <b> A sua Casa dos Quizes </b></p>
+                    <hr>                     
+            </div>
+        </div>
+       
+  
+        <div class="row"> 
+			<div class="col-md-3">
+    
+                    <p class="text-center-75 text-white"> &copy Quiz Center </p>
+                    <p class="text-center-75 text-white"> By Gessé C Oliveira - @2023</p>
+			</div>
+			<div class="col-md-6 text-md-center">
+	
+                <p class="text-center-75 text-white">wwww.quizcenter.com.br </p>
+				
+                {% if preferencias_salvas %}
+                 <p class="text-center-75 text-white small"> Termos de uso de cookies aceitos </p>
+                 {% else %}
+                 <p class="text-center-75 text-white small"> Obrigatório aceite aos termos uso </p>
+                {% endif %}  
+			</div>
+			<div class="col-md-3 text-md-right">
+                <p class="text-center-75 text-white"> Street name 123, Avanue abc</p>
+                <p class="text-center-75 text-white"> contato@quizcenter.com.br </p>
+			</div>
+		</div>
+	</div><!-- //container -->  
+    
+</footer>
+
+        
+    <!-- Bloco destinado aos scripts para cada página  -->
+    {% block scripts %} 
+        <!-- A ordem deve ser esta porque ele deve ler primeiro o jQuery -->
+        <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    
+        <script src="{% static 'js/popper.js' %}">          </script>
+        <script src="{% static 'js/bootstrap.min.js' %}">   </script>
+        <script src="{% static 'js/navbar-animada.js' %}">  </script>
+        <script src="{% static 'js/lgpd.js' %}"> defer      </script>
+    
+        <!-- Plug-in widget calendar do jquery -->
+        <script src="{% static 'js/datepicker.js' %}"></script>
+    
+        <!-- Plug-in datable do jquery -->
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.22/datatables.min.js"></script>
+    
+        <!-- <script src="{% static 'js/disc.js' %}" defer> </script> -->
+        <script>     
+        function abrirPopup() {
+            var largura = 400;
+            var altura = 400;
+            var left = (screen.width - largura) / 2;
+            var top = (screen.height - altura) / 2;
+            var opcoes = "width=" + largura + ', height=' + altura + ', top=' + top + ', left=' + left + ', scrollbars=1';
+            window.open("{% url 'preference:politica' %}", "popup", opcoes);
+        }
+        </script>    
+    {% endblock scripts %}
+    </body>
+</html>
