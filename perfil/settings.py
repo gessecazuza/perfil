@@ -44,7 +44,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 ## 1. Se não tiver valor, será True. 2. Precisa receber um Booleano  
 DEBUG = config('DEBUG', default=True, cast=bool) 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = list[str] = ['*'] # quizcenter.com.br
 
 # Application definition
 INSTALLED_APPS = [
