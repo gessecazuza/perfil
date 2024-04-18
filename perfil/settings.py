@@ -72,7 +72,6 @@ INSTALLED_APPS = [
      'admin_honeypot', # Aula 162. Gerar Falso painel de adminsitração
 ]
 
-
 """ Sessão 26 - Segurança - Aula 163. Sair automaticamente após inatividade
     1.> pip install django-session-timeout 
     2. Adicionar a chave MIDDLEWARE: 'django_session_timeout.middleware.SessionTimeoutMiddleware',
