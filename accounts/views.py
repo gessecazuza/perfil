@@ -17,21 +17,24 @@ from django.utils.decorators import method_decorator
 
 ################# MOdelo de registro com as Views generics ########################
 class UsuarioCreate(CreateView):
-    template_name = "registration/form.html"
+    template_name = "registration/form.html" # form.html / register.html
     form_class = UsuarioForm
     success_url = reverse_lazy('login')
-
-    ## Valida o formulário antes de salvar. Gera o perfil em branco para cada novo usuário 
+    
+    # Valida o formulário antes de salvar 
     def form_valid(self, form):
+        # Salva o formulário e pega o objeto usuário criado
+        self.object = form.save()
 
-        url = super().form_valid(form)              # Pega a URL em uso nesse momento
-        self.object = form.save()                   # Salva o formulário e pega o objeto usuário criado
-        Perfil.objects.create(usuario=self.object)  # Cria um perfil em branco para o usuário
-        return url                                  # Retorna a URL de sucesso pelo reverse_lazy('login')
+        # Cria um perfil em branco para o usuário
+        Perfil.objects.create(usuario=self.object)
+
+        # Retorna a URL de sucesso
+        return super().form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['titulo'] = "REGISTRO DE NOVO USUARIO"
+        context['titulo'] = "REGISTRO DE NOVO USUÁRIO"
         context['botao'] = "CADASTRAR"
         return context
 
