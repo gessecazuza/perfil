@@ -34,8 +34,9 @@ from django.contrib.messages import constants as messages   # Sistema de mensage
 from decouple import config                                 # Pacote de configuração de segurança
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -45,6 +46,28 @@ SECRET_KEY = config('SECRET_KEY')
 ## 1. Se não tiver valor, será True. 2. Precisa receber um Booleano  
 DEBUG = config('DEBUG', default=True, cast=bool) 
 ALLOWED_HOSTS: list[str] = ['*'] # quizcenter.com.br
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+# Com a pasta static no mesmo nível da pasta do projeto - D:\perfil\perfil\static
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR /'static'
+
+#Arquivos de Mídia
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR /'media'
+
+#Para coletar os arquivos css, js e imagens na pasta 'D:\perfil\static'
+# python manage.py collectstatic
+STATICFILES_DIRS = [
+    'perfil/static/'
+]
+
+
+print("Diretório Base:", BASE_DIR)
+print("Estáticos: ", BASE_DIR/STATIC_URL)
+print("Mídia: ", BASE_DIR/ MEDIA_URL)
 
 # Application definition
 INSTALLED_APPS = [
@@ -163,15 +186,6 @@ LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 #Sistema de autenticação personalizado

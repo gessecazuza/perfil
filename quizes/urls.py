@@ -22,10 +22,5 @@ urlpatterns = [
    
     # Quizes variados - Retorna um único quiz a ser respondido pela chave pk - quiz.html
     path('lista-quizes/<pk>/', quiz_view, name='quiz-view'),
-    
-    #path('joga-quiz/<pk>/', quiz_questions, name='quiz-view'),
-    #Pega a pergunta(s) e sua list de respostas
-    #Envia ao quiz.js com o parametro 'data' para compor a URL
-    #path('lista-quizes/<pk>/data/', quiz_data_view, name='quiz-data-view'),
-    #path('quiz-question/<pk>/',quiz_questions, name='quiz-question')
+
 ]

@@ -12,34 +12,34 @@
                     <hr>                     
             </div>
         </div>
-       
-  
-        <div class="row"> 
-			<div class="col-md-3">
-    
-                    <p class="text-center-75 text-white"> &copy Quiz Center </p>
-                    <p class="text-center-75 text-white"> By Gessé C Oliveira - @2023</p>
-			</div>
-			<div class="col-md-6 text-md-center">
-	
-                <p class="text-center-75 text-white">wwww.quizcenter.com.br </p>
-				
-                {% if preferencias_salvas %}
-                 <p class="text-center-75 text-white small"> Termos de uso de cookies aceitos </p>
-                 {% else %}
-                 <p class="text-center-75 text-white small"> Obrigatório aceite aos termos uso </p>
-                {% endif %}  
-			</div>
-			<div class="col-md-3 text-md-right">
-                <p class="text-center-75 text-white"> Street name 123, Avanue abc</p>
-                <p class="text-center-75 text-white"> contato@quizcenter.com.br </p>
-			</div>
-		</div>
+        <div class="container-fluid"> 
+            <div class="row"> 
+                <div class="col-md-3 small">
+                        <p class="text-center-75 text-white"> &copyQuiz Center </p>
+                        <p class="text-center-75 text-white"> By Gessé C Oliveira - @2024</p>
+                </div>
+                <div class="col-md-6 text-md-center small">
+                    <p class="text-center-75 text-white">wwww.quizcenter.com.br </p>
+                    
+                    {% if preferencias_salvas %}
+                    <p class="text-center-75 text-white small"> Termos de uso de cookies aceitos </p>
+                    {% else %}
+                    <p class="text-center-75 text-white small"> Obrigatório aceite aos termos uso </p>
+                    {% endif %}  
+                </div>
+                <div class="col-md-3 text-md-right small">
+                    <p class="text-center-75 text-white"> Guarulhos, São Paulo - Brasil</p>
+                    <p class="text-center-75 text-white"> gessecazuza@gmail.com </p>
+                </div>
+            </div>
+        </div>
 	</div><!-- //container -->  
-    
 </footer>
+    <!-- Back to Top -->
+    <a href="#" class="float-left"  style="width: 40px; height: 40px; font-size: 17px; padding-top: 12px; transition: background 0.5s;">
+         <i class="fa fa-chevron-up"> TOPO </i>   
+    </a> <!-- botao-topo -->
 
-        
     <!-- Bloco destinado aos scripts para cada página  -->
     {% block scripts %} 
         <!-- A ordem deve ser esta porque ele deve ler primeiro o jQuery -->
