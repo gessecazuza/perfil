@@ -158,7 +158,7 @@ DATABASES = {
 
 
 # Banco de dados GeoLite2-City.mmdb para geolocalização
-GEOIP_PATH = os.path.join(BASE_DIR, 'dados\GeoLite2-City.mmdb') # D:\perfil\dados
+GEOIP_PATH = os.path.join(BASE_DIR, 'localizacao\GeoLite2-City.mmdb') # D:\perfil\localizacao\
 
 
 # Password validation
