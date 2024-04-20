@@ -32,17 +32,17 @@ from django.contrib import messages
 ###############################################################
 # 1. Página Inicial, Sobre e Servicos - TEST OK
 ###############################################################
-@login_required
+#@login_required
 def IndexView(request):
     login_url = reverse_lazy('login')
     return render(request, 'index.html')
     
-@login_required
+#@login_required
 def SobreView(request):
     login_url = reverse_lazy('login')
     return render(request, 'sobre.html')
 
-@login_required
+#@login_required
 def ServicosView(request):
     login_url = reverse_lazy('login')
     return render(request, 'services.html')
@@ -51,9 +51,9 @@ def ServicosView(request):
 ###############################################################
 # 1.4. Lista informações sobre o DISC - TEST OK - url: teste-disc
 ###############################################################
-@login_required
+# @login_required
 def TesteDisc(request):
-    login_url = reverse_lazy('login')
+    # login_url = reverse_lazy('login')
     dominante = Personalidade.objects.filter(personalidade = 1)
     influente = Personalidade.objects.filter(personalidade = 2)
     estavel = Personalidade.objects.filter(personalidade = 3)
@@ -71,8 +71,9 @@ def TesteDisc(request):
 ###############################################################
 #Lista todos os quizes - Logado -  TEST OK - url: ListaQuizes
 ###############################################################
-class ListaQuizes(LoginRequiredMixin, ListView):
-    login_url = reverse_lazy('login')
+# LoginRequiredMixin,
+class ListaQuizes(ListView):
+    # login_url = reverse_lazy('login')
     model = Quiz
     template_name = 'lista-quizes.html'
     queryset = Quiz.objects.all().order_by('id')

@@ -46,10 +46,10 @@ class PerfilUpdate(UpdateView):
               "telefone", "raca_cor", "pais"]
     success_url = reverse_lazy("quizes:index") # quizes:index
 
-    # Obter um Perfil já existente ou retornar um erro 404 caso ele não seja encontrado. 
+    # Obtém o perfil do usuário logado. Se não existir, cria um novo perfil em branco.
     def get_object(self, queryset=None):
-        self.object = get_object_or_404(Perfil, usuario=self.request.user)
-        return self.object
+        perfil, created = Perfil.objects.get_or_create(usuario=self.request.user)
+        return perfil
 
     # Devolve ao template um dicionário (como request.render())
     def get_context_data(self, *args, **kwargs):

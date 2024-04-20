@@ -17,6 +17,7 @@ urlpatterns = [
     
     # Para o teste DISC - template: disc-question.html
     path('joga-disc/<pk>/', disc_questions, name='disc-view'),
+    
     #path('joga-disc/<pk>/', DiscQuestionsView.disc_questions, name='disc-view'),
     path('joga-disc/<pk>/save/', save_quiz_view, name="save_view"),
    
