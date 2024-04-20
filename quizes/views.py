@@ -52,11 +52,12 @@ def ServicosView(request):
 # 1.4. Lista informações sobre o DISC - TEST OK - url: teste-disc
 ###############################################################
 def TesteDisc(request):
-   
+     
     dominante = Personalidade.objects.filter(personalidade = 1)
     influente = Personalidade.objects.filter(personalidade = 2)
     estavel = Personalidade.objects.filter(personalidade = 3)
     cauteloso = Personalidade.objects.filter(personalidade = 4)
+    
     params = {
         'dominante': dominante,
         'influente': influente,
@@ -64,11 +65,11 @@ def TesteDisc(request):
         'cauteloso': cauteloso,
         'request': request,
     }
-    return render(request, 'teste-disc.html', {'obj': params})
+    return render(request, 'teste-disc.html') #, {'obj': params}
 
 
 ###############################################################
-#Lista todos os quizes - Logado -  TEST OK - url: ListaQuizes
+# Lista todos os quizes - Logado -  TEST OK - url: ListaQuizes
 ###############################################################
 class ListaQuizes(ListView):
     model = Quiz
