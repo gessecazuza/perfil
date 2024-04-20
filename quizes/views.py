@@ -51,9 +51,8 @@ def ServicosView(request):
 ###############################################################
 # 1.4. Lista informações sobre o DISC - TEST OK - url: teste-disc
 ###############################################################
-# @login_required
 def TesteDisc(request):
-    # login_url = reverse_lazy('login')
+   
     dominante = Personalidade.objects.filter(personalidade = 1)
     influente = Personalidade.objects.filter(personalidade = 2)
     estavel = Personalidade.objects.filter(personalidade = 3)
@@ -71,9 +70,7 @@ def TesteDisc(request):
 ###############################################################
 #Lista todos os quizes - Logado -  TEST OK - url: ListaQuizes
 ###############################################################
-# LoginRequiredMixin,
 class ListaQuizes(ListView):
-    # login_url = reverse_lazy('login')
     model = Quiz
     template_name = 'lista-quizes.html'
     queryset = Quiz.objects.all().order_by('id')
@@ -87,7 +84,6 @@ class ListaQuizes(ListView):
         else:
             quizes = Quiz.objects.all()
         return quizes
-
 
 ######################################################################
 ####### Retorna um ÚNICO quiz GERAL pela pk - TEST OK - url: quiz-view
@@ -160,7 +156,7 @@ def atualiza_perfil(request, tipoPerfil):
         
 
 ######################### ############################################################
-# Lista QUIZ pela pk - Uma pergunta por vez por quiz isoladamente - DISC
+# FAZ o QUIZ pela pk - Uma pergunta por vez por quiz isoladamente - DISC
 #####################################################################################
 @login_required
 def quiz_questions(request, pk):
