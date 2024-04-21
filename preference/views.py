@@ -89,7 +89,7 @@ def aceitar_cookies(request):
             Preference.objects.create(
                 user=usuario, dataAdesao=dataAdesao, SO=so,
                 VersaoSO=versaoOS, arquitetura=arquitetura, processador=processador,
-                navegador=navegador,  ipTerminal=ipTerminal, pais=country, 
+                navegador=navegador,  pais=country, 
                 cidade=city, idioma=idioma, aceitouTermos=aceitouTermos,
                 analyticsCookies = analytics_cookies, marketingCookies = marketing_cookies 
             )
