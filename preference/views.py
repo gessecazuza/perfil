@@ -48,36 +48,7 @@ def aceitar_cookies(request):
         aceitouTermos = True
         analytics_cookies = True if 'analytics_cookies' in request.POST else False
         marketing_cookies = True if 'marketing_cookies' in request.POST else False
-
-        # Adicione este bloco logo antes de tentar obter o endereço IP do cliente
-        print("request.META:", request.META)    
-
-       # Obter o endereço IP do cliente
         ipTerminal = None
-
-        # Primeira opção: verificar cabeçalho X-Forwarded-For
-        ipPesquisado = request.META.get('HTTP_X_FORWARDED_FOR')
-        if ipPesquisado:
-            ipTerminal = ipPesquisado.split(',')[0].strip()  # Remover espaços em branco extras
-
-        # Segunda opção: verificar cabeçalho X-Real-IP
-        if not ipTerminal:
-            ipPesquisado = request.META.get('HTTP_X_REAL_IP')
-            if ipPesquisado:
-                ipTerminal = ipPesquisado.strip()  # Remover espaços em branco extras
-
-        # Terceira opção: verificar REMOTE_ADDR
-        if not ipTerminal:
-            ipTerminal = request.META.get('REMOTE_ADDR')
-
-        # Verificar se o IP é válido
-        if ipTerminal:
-            try:
-                ipaddress.ip_address(ipTerminal)  # Isso irá levantar uma exceção se o IP não for válido
-            except ValueError:
-                # Trate o caso em que o IP não é válido
-                ipTerminal = None
-
         usuario = request.user
 
         ##### Buscar no banco de dados ####
