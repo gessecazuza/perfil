@@ -71,26 +71,10 @@ def aceitar_cookies(request):
             dataAdesao = datetime.now()
             hora = f"{dataAdesao.strftime('%d/%m/%Y')} - {dataAdesao.strftime('%H:%M:%S')}"
             
-            ### Ponteiro que varre o BASE de dados
-            reader = geoip2.database.Reader(geoip_path)
-            try:
-                response = reader.city(ipTerminal)
-                country = response.country.name                
-                city = response.city.name
-            except (AddressNotFoundError, GeoIP2Error):
-                country = 'Desconhecido'
-                city = 'Não localizada' # Fechando o leitor de banco de dados
-            reader.close()  # Fechando o leitor de banco de dados
-            '''if request.user.is_anonymous:
-                usuario = Preference.objects.create(user=None, aceitouTermos = aceitouTermos)
-            else:
-                usuario = Preference.objects.create(user=request.user,  aceitouTermos = aceitouTermos)
-            '''
             Preference.objects.create(
                 user=usuario, dataAdesao=dataAdesao, SO=so,
                 VersaoSO=versaoOS, arquitetura=arquitetura, processador=processador,
-                navegador=navegador,  pais=country, 
-                cidade=city, idioma=idioma, aceitouTermos=aceitouTermos,
+                navegador=navegador, idioma=idioma, aceitouTermos=aceitouTermos,
                 analyticsCookies = analytics_cookies, marketingCookies = marketing_cookies 
             )
             # Redirecionando de volta para o index.html
