@@ -140,22 +140,95 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'perfil.wsgi.application'
 
+""" 
+# Verifica se o arquivo db.sqlite3 existe
+if os.path.isfile("db.sqlite3"):
+    # Se existe, use o SQLite como banco de dados
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "db.sqlite3",
+        }
+    }
+else:
+    # Se não existe, use o PostgreSQL como banco de dados
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "quiz",
+            "USER": "gessecazuza",
+            "PASSWORD": "Gs170323",
+            "HOST": "127.0.0.1",
+            "PORT": "5432",
+        }
+    }
+"""
+import os
+from dotenv import load_dotenv # pip install python-dotenv
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# Carrega as variáveis de ambiente do arquivo .env
+load_dotenv()
 
-# Database settings
+# Verifica se a variável de ambiente para a engine do banco de dados SQLite está definida
+if os.getenv("DATABASE_ENGINE") == 'django.db.backends.sqlite3':
+    # Se definida, use o SQLite como banco de dados
+    DATABASES = {
+        "default": {
+            "ENGINE": os.getenv("DATABASE_ENGINE"),
+            "NAME": os.getenv("DATABASE_NAME"),
+        }
+    }
+else:
+    # Se não definida ou se a engine não for sqlite3, use as configurações para o PostgreSQL
+    DATABASES = {
+        "default": {
+            "ENGINE": os.getenv("DATABASE_ENGINE"),
+            "NAME": os.getenv("DATABASE_NAME"),
+            "USER": os.getenv("DATABASE_USER"),
+            "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+            "HOST": os.getenv("DATABASE_HOST"),
+            "PORT": os.getenv("DATABASE_PORT"),
+        }
+    }
+
+
+# Postgres: no server será usado o postgreq, configurado diretamente na nuvem
+""" 
+DATABASE_ENGINE='django.db.backends.postgresql'
+DATABASE_NAME="quiz"
+DATABASE_USER = "gessecazuza"
+DATABASE_PASSWORD = "Gs170323"
+DATABASE_HOST = "127.0.0.1"
+DATABASE_PORT = "5432"
+"""
+
+# Configuração atual com db.sqlite3
+""" 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DATABASE_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('DATABASE_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
-        'USER': os.environ.get('DATABASE_USER', ''),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
-        'HOST': os.environ.get('DATABASE_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('DATABASE_PORT', '5432'),
+        'ENGINE':os.environ.get('DATABASE_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME':os.environ.get('DATABASE_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER':os.environ.get('DATABASE_USER', ''),
+        'PASSWORD':os.environ.get('DATABASE_PASSWORD', ''),
+        'HOST':os.environ.get.get('DATABASE_HOST', '127.0.0.1'),
+        'PORT':os.environ.get.get('DATABASE_PORT', '5432'),
     }
 }
+"""
 
+#### Configuração curso-django - deploy para postgres
+""" 
+DATABASES = {
+'default': {
+    'ENGINE':os.environ.get.get('DATABASE_ENGINE'),
+    'NAME':os.environ.get.get('DATABASE_NAME'),
+    'USER':os.environ.get.get('DATABASE_USER'),
+    'PASSWORD':os.environ.get.get('DATABASE_PASSWORD'),
+    'HOST':os.environ.get.get('DATABASE_HOST'),
+    'PORT':os.environ.get.get('DATABASE_PORT'),
+}
+}
+"""
 
 # Banco de dados GeoLite2-City.mmdb para geolocalização
 GEOIP_PATH = os.path.join(BASE_DIR, 'localizacao\GeoLite2-City.mmdb') # D:\perfil\localizacao\
