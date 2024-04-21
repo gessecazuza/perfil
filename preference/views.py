@@ -41,7 +41,7 @@ def politica_privacidade(request):
     a) User, IP e Aceitou termos;
     2. Se NAO tem, exibir mensagem no template e deixar gravar
         2. SE já tem NÃO exibir o form no index.html'''
-def aceitar_cookies_old(request):
+def aceitar_cookies(request):
     if request.method == 'POST':
         
         # Capturando os parâmetros do formulário   
