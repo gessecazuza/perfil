@@ -51,6 +51,7 @@ def aceitar_cookies(request):
 
         # Obter o endereço IP do cliente
         ipPesquisado = request.META.get('HTTP_X_FORWARDED_FOR')
+        print("Localizado:", ipPesquisado)
         if ipPesquisado:
             ipTerminal = ipPesquisado.split(',')[0].strip()  # Remover espaços em branco extras
         elif 'REMOTE_ADDR' in request.META:
@@ -68,7 +69,7 @@ def aceitar_cookies(request):
         usuario = request.user
 
         ##### Buscar no banco de dados ####
-        preferencia = Preference.objects.filter(user=usuario, ipTerminal=ip, aceitouTermos=True).first()
+        preferencia = Preference.objects.filter(user=usuario, ipTerminal=ipTerminal, aceitouTermos=True).first()
         
         if not preferencia:
             # Acessando a constante GEOIP_PATH definida no arquivo settings.py
