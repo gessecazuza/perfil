@@ -32,6 +32,7 @@ from pathlib import Path                                    # Padrão para acess
 import os                                                   # Acessar o Sistema Operacional
 from django.contrib.messages import constants as messages   # Sistema de mensagens
 from decouple import config                                 # Pacote de configuração de segurança
+from dotenv import load_dotenv                              # pip install python-dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -163,8 +164,6 @@ else:
         }
     }
 """
-import os
-from dotenv import load_dotenv # pip install python-dotenv
 
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
