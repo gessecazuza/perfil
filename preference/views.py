@@ -50,14 +50,18 @@ def aceitar_cookies(request):
         marketing_cookies = True if 'marketing_cookies' in request.POST else False
 
         # Obter o endereço IP do cliente
-        ipPesquisado = request.META.get('HTTP_X_FORWARDED_FOR')
-        print("Localizado:", ipPesquisado)
-        if ipPesquisado:
-            ipTerminal = ipPesquisado.split(',')[0].strip()  # Remover espaços em branco extras
-        elif 'REMOTE_ADDR' in request.META:
+        ipTerminal = None
+
+        # Primeira opção: verificar REMOTE_ADDR
+        if 'REMOTE_ADDR' in request.META:
             ipTerminal = request.META['REMOTE_ADDR'].strip()  # Remover espaços em branco extras
-        else:
-            ipTerminal = None  # ou defina um valor padrão se nenhum IP for encontrado
+
+        # Segunda opção: verificar HTTP_X_FORWARDED_FOR apenas se REMOTE_ADDR estiver vazio
+        if not ipTerminal:
+            ipPesquisado = request.META.get('HTTP_X_FORWARDED_FOR')
+            if ipPesquisado:
+                ipTerminal = ipPesquisado.split(',')[0].strip()  # Remover espaços em branco extras
+
         # Verificar se o IP é válido
         if ipTerminal:
             try:
