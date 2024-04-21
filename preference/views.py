@@ -81,7 +81,8 @@ def aceitar_cookies(request):
         usuario = request.user
 
         ##### Buscar no banco de dados ####
-        preferencia = Preference.objects.filter(user=usuario, ipTerminal=ipTerminal, aceitouTermos=True).first()
+        #preferencia = Preference.objects.filter(user=usuario, ipTerminal=ipTerminal, aceitouTermos=True).first()
+        preferencia = Preference.objects.filter(user=usuario, aceitouTermos=True).first()
         
         if not preferencia:
             # Acessando a constante GEOIP_PATH definida no arquivo settings.py
