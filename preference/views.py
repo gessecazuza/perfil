@@ -57,7 +57,7 @@ def aceitar_cookies(request):
         
         if not preferencia:
             # Acessando a constante GEOIP_PATH definida no arquivo settings.py
-            geoip_path = settings.GEOIP_PATH
+            # geoip_path = settings.GEOIP_PATH
             navegador = get_user_agent(request)
             so = platform.system()
             versaoOS = platform.release()
@@ -81,70 +81,6 @@ def aceitar_cookies(request):
         return render(request, 'index.html', {'preferencias_salvas': True})
     return render(request, 'index.html', {'preferencias_salvas': False})
 
-""" 
-def aceitar_cookies_old(request):
-    if request.method == 'POST':
-        
-        # Capturando os parâmetros do formulário   
-        aceitouTermos = True
-        analytics_cookies = True if 'analytics_cookies' in request.POST else False
-        marketing_cookies = True if 'marketing_cookies' in request.POST else False
-
-        # Obter o endereço IP do cliente
-        ipPesquisado = request.META.get('HTTP_X_FORWARDED_FOR')
-        if ipPesquisado:
-            ipTerminal = ipPesquisado.split(',')[0]
-        else:
-            ipTerminal = request.META.get('REMOTE_ADDR')
-        ip = ipTerminal
-        usuario = request.user
-
-        ##### Buscar no banco de dados ####
-        preferencia = Preference.objects.filter(user=usuario, ipTerminal=ip, aceitouTermos=True).first()
-        
-        if not preferencia:
-            # Acessando a constante GEOIP_PATH definida no arquivo settings.py
-            geoip_path = settings.GEOIP_PATH
-            navegador = get_user_agent(request)
-            so = platform.system()
-            versaoOS = platform.release()
-            arquitetura = platform.machine()          
-            processador = platform.processor()
-            language = request.META.get('HTTP_ACCEPT_LANGUAGE')
-            if language:
-                idioma = language.split(',')[0]
-            else:
-                idioma = 'Desconhecido'
-            dataAdesao = datetime.now()
-            hora = f"{dataAdesao.strftime('%d/%m/%Y')} - {dataAdesao.strftime('%H:%M:%S')}"
-            
-            ### Ponteiro que varre o BASE de dados
-            reader = geoip2.database.Reader(geoip_path)
-            try:
-                response = reader.city(ipTerminal)
-                country = response.country.name                
-                city = response.city.name
-            except (AddressNotFoundError, GeoIP2Error):
-                country = 'Desconhecido'
-                city = 'Não localizada' # Fechando o leitor de banco de dados
-            reader.close()  # Fechando o leitor de banco de dados
-            '''if request.user.is_anonymous:
-                usuario = Preference.objects.create(user=None, aceitouTermos = aceitouTermos)
-            else:
-                usuario = Preference.objects.create(user=request.user,  aceitouTermos = aceitouTermos)
-            '''
-            Preference.objects.create(
-                user=usuario, dataAdesao=dataAdesao, SO=so,
-                VersaoSO=versaoOS, arquitetura=arquitetura, processador=processador,
-                navegador=navegador,  ipTerminal=ipTerminal, pais=country, 
-                cidade=city, idioma=idioma, aceitouTermos=aceitouTermos,
-                analyticsCookies = analytics_cookies, marketingCookies = marketing_cookies 
-            )
-            # Redirecionando de volta para o index.html
-        return render(request, 'index.html', {'preferencias_salvas': True})
-    return render(request, 'index.html', {'preferencias_salvas': False})
-"""
-
 ###### Carrega os dados do terminal ########
 @login_required        
 def localiza_usuario(request):
@@ -161,14 +97,10 @@ def localiza_usuario(request):
 
     usuario = request.user
     ##### Buscar no banco de dados ####
-    preferencia = Preference.objects.filter(user=usuario, ipTerminal=ipTerminal, aceitouTermos=True).first()
+    preferencia = Preference.objects.filter(user=usuario, aceitouTermos=True).first()
     
     if preferencia:
         
-        # Acessando a constante GEOIP_PATH definida no arquivo settings.py
-        # D:\QuizCenter\quiz_proj\settings.py
-        geoip_path = settings.GEOIP_PATH
-    
         # Capturando o agente do usuário
         #navegador = get_user_agent(request)
         navegador = preferencia.navegador
@@ -192,23 +124,10 @@ def localiza_usuario(request):
         marketing    =  preferencia.marketingCookies
         analiticos   =  preferencia.analyticsCookies
         
-        # Ponteiro que varre o BASE de dados
-        reader = geoip2.database.Reader(geoip_path)
-        try:
-            response = reader.city(ipTerminal)
-            country = response.country.name
-            city = response.city.name
-        except (AddressNotFoundError, GeoIP2Error):
-            country = 'Desconhecido'
-            city = 'Não localizada'
-
-        # Fechando o leitor de banco de dados
-        reader.close()
-
         # Criando o dicionário de parâmetros
         parametros = {
             'usuario': usuario,
-            'ipTerminal': ipTerminal,
+            'email': usuario.email,
             'SO': SO,
             'VersaoOS': versaoOS,
             'arquitetura': arquitetura,
@@ -219,8 +138,6 @@ def localiza_usuario(request):
             'aceitouTermos': aceitouTermos,
             'marketing': marketing,
             'analiticos': analiticos,
-            'pais': country,
-            'cidade': city,
         }
     else:
         # Mensagem de erro para o usuário sem preferências registradas
