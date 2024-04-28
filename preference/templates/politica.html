@@ -42,8 +42,8 @@
 {% block scripts %} 
 <script>
     window.addEventListener('DOMContentLoaded', function() {
-      var largura = 400;
-      var altura = 400;
+      var largura = 300;
+      var altura = 300;
       var left = (screen.width - largura) / 2;
       var top = (screen.height - altura) / 2;
       var opcoes = 'width=' + largura + ', height=' + altura + ', top=' + top + ', left=' + left + ', scrollbars=1';
@@ -66,9 +66,9 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Política de Privacidade</h1>
+  <h1 class="text-center text-uppercase"> QuizCenter - Política de Privacidade </h1> <hr>
   <div id="politica-content">
-      <p>Esta é a nossa política de privacidade de acordo com a LGPD.</p>
+      <p>Esta é a nossa política de privacidade de acordo com a LGPD - Lei Geral de Proteção a Dados</p>
       
       <h2>Coleta de Dados Pessoais</h2>
       <p>Nós coletamos apenas os dados pessoais necessários para fornecer nossos serviços e cumprir com as obrigações legais.</p>

@@ -11,7 +11,18 @@ DIFF_CHOICES = (
     ('Médio', 'Médio'),
     ('Avançado', 'Avançado'),
 )
+""" ###### APÓS UMA RESTAURAÇÃO DE BD PostgresSQL, pode ser necessário redefinir as PK com sequência de incremento automático (ID) ####
 
+1. Tabela quizes_quiz
+SELECT setval('quizes_quiz_id_seq', (SELECT MAX(id) FROM quizes_quiz)+1);
+
+2.Tabela questions_question
+SELECT setval('questions_question_id_seq', (SELECT MAX(id) FROM questions_question)+1);
+
+3. Tabela questions_answer
+SELECT setval('questions_answer_id_seq', (SELECT MAX(id) FROM questions_answer)+1);
+
+"""
 class Quiz(models.Model):
 
     name = models.CharField(max_length=100, verbose_name="Nome geral:")

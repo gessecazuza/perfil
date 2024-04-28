@@ -65,7 +65,7 @@ def TesteDisc(request):
         'cauteloso': cauteloso,
         'request': request,
     }
-    return render(request, 'teste-disc.html') #, {'obj': params}
+    return render(request, 'teste-disc.html', {'obj': params})
 
 
 ###############################################################
@@ -74,9 +74,9 @@ def TesteDisc(request):
 class ListaQuizes(ListView):
     model = Quiz
     template_name = 'lista-quizes.html'
-    queryset = Quiz.objects.all().order_by('id')
+    queryset = Quiz.objects.all().order_by('-created')
     context_object_name = 'quizes'
-    paginate_by = 10
+    paginate_by = 7
    
     def get_queryset(self):
         txt_nome = self.request.GET.get('nome')
@@ -90,13 +90,14 @@ class ListaQuizes(ListView):
 ####### Retorna um ÚNICO quiz GERAL pela pk - TEST OK - url: quiz-view
 ####### (Passa pelo Template lista-quizes.html para chamar os demais)
 ######################################################################
+""" 
 @login_required
 def quiz_view(request, pk):
     login_url = reverse_lazy('login')
     #quiz = Quiz.objects.get(pk=pk)
     quiz = get_object_or_404(Quiz, pk=pk)
     return render(request, 'quiz.html', {'obj': quiz})
-
+"""
 
 ######################################################################
 #SALVAR - Pega o questionário pronto via Jason pelo arquivo quizes/quiz.js
@@ -143,8 +144,7 @@ def save_quiz_view(request, pk):
         return HttpResponseBadRequest("Erro ao salvar na base de dados: {}".format(e))
 
     # Em caso de falha, retorne um HttpResponseBadRequest ou outra resposta de erro HTTP
-    return HttpResponseBadRequest("Houve falha na quisiçao ao tentar salvar.")
-
+    return HttpResponseBadRequest("Houve falha na aquisiçao ao tentar salvar.")
 
 #################################################################################
 #### Atualiza a Personalidade após salvar o teste DISC
@@ -155,27 +155,6 @@ def atualiza_perfil(request, tipoPerfil):
     usuario.save()
     return usuario
         
-
-######################### ############################################################
-# FAZ o QUIZ pela pk - Uma pergunta por vez por quiz isoladamente - DISC
-#####################################################################################
-@login_required
-def quiz_questions(request, pk):
-    login_url = reverse_lazy('login')
-    quiz = Quiz.objects.get(id=pk)
-    questions = Question.objects.filter(quiz_id=quiz).order_by('id')
-    paginator = Paginator(questions,1)
-    try:
-        page = int(request.GET.get('page','1'))
-    except:
-        page = 1
-    try:
-        questions = paginator.page(page)
-    except(EmptyPage, InvalidPage):
-        questions = paginator.page(paginator.num_pages)  
-    return render(request, 'quiz.html', {'quiz':quiz, 'questions': questions})
-
-
 ##########################################################################
 ###################  ENVIO DE E-MAIL - TEST OK ###########################
 ##########################################################################
@@ -196,15 +175,34 @@ def contato(request):
 
 
 ######################### ############################################################
-##### Lista QUIZ pela pk - Uma pergunta por vez - disc-question.html - url: quiz-view 
+##### Lista DISC pela pk - Uma pergunta por vez - quiz-question.html - url: quiz-view 
+##### TESTE COM ERRO: self.assertContains(response, "Pergunta:", count=num_questions)
+#####################################################################################
+@login_required
+def quiz_questions(request, pk):
+    login_url = reverse_lazy('login')
+    quiz = Quiz.objects.get(id=pk)
+    questions = Question.objects.filter(quiz_id=quiz).order_by('id')
+    paginator = Paginator(questions,1)
+    try:
+        page = int(request.GET.get('page','1'))
+    except:
+        page = 1
+    try:
+        questions = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        questions = paginator.page(paginator.num_pages)  
+    #return render(request, 'quiz-question.html', {'quiz':quiz, 'questions': questions})
+    return render(request, 'quiz-parcial.html', {'quiz':quiz, 'questions': questions})
+
+
+######################### ############################################################
+##### Lista DISC pela pk - Uma pergunta por vez - disc-question.html - url: quiz-view 
 ##### TESTE COM ERRO: self.assertContains(response, "Pergunta:", count=num_questions)
 #####################################################################################
 @login_required
 def disc_questions(request, pk):
     login_url = reverse_lazy('login')
-    
-    # Obter o objeto Quiz com base no pk em vez de usar Quiz.objects.get
-    #quiz = Quiz.objects.get(id=pk)
     quiz = get_object_or_404(Quiz, id=pk) 
     questions = Question.objects.filter(quiz=quiz).order_by('id')
     paginator = Paginator(questions, 1)

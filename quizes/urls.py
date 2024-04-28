@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     IndexView, SobreView, ServicosView, ListaQuizes, disc_questions,
-    quiz_view, TesteDisc, contato, save_quiz_view, quiz_questions, 
+    TesteDisc, contato, save_quiz_view, quiz_questions,
 )
 
 app_name = 'quizes'
@@ -18,10 +18,9 @@ urlpatterns = [
     # Para o teste DISC - template: disc-question.html
     path('joga-disc/<pk>/', disc_questions, name='disc-view'),
     
-    #path('joga-disc/<pk>/', DiscQuestionsView.disc_questions, name='disc-view'),
     path('joga-disc/<pk>/save/', save_quiz_view, name="save_view"),
    
-    # Quizes variados - Retorna um único quiz a ser respondido pela chave pk - quiz.html
-    path('lista-quizes/<pk>/', quiz_view, name='quiz-view'),
+   # Para o teste DISC - template: quiz-question.html
+    path('joga-quiz/<pk>/', quiz_questions, name='quiz-view'),
 
 ]

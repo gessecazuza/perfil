@@ -11,9 +11,12 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from .models import Perfil
 
+from preference.models import Preference
+import platform
+
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
+from django.urls import reverse
 
 ################# MOdelo de registro com as Views generics ########################
 class UsuarioCreate(CreateView):
@@ -37,6 +40,10 @@ class UsuarioCreate(CreateView):
         context['titulo'] = "REGISTRO DE NOVO USUÁRIO"
         context['botao'] = "CADASTRAR"
         return context
+    
+    ## Redirecione ao template definir_cookies após criar o usuário:
+    #def get_success_url(self):
+    #    return reverse('preference:definir_cookies')
 
 @method_decorator(login_required, name='dispatch')
 class PerfilUpdate(UpdateView):
@@ -44,7 +51,7 @@ class PerfilUpdate(UpdateView):
     model = Perfil
     fields = ["nome_completo", "sexo", "nascimento", "profissao", 
               "telefone", "raca_cor", "pais"]
-    success_url = reverse_lazy("quizes:index") # quizes:index
+    success_url = reverse_lazy("quizes:ListaQuizes") # quizes:ListaQuizes
 
     # Obtém o perfil do usuário logado. Se não existir, cria um novo perfil em branco.
     def get_object(self, queryset=None):
@@ -58,3 +65,7 @@ class PerfilUpdate(UpdateView):
         context["titulo"] = "ATUALIZAÇÃO CADASTRAL"
         context["botao"] = "CONFIRMAR"
         return context
+
+    # Retorna à mesma URL para redirecionamento após uma operação bem-sucedida
+    #def get_success_url(self):
+    #    return self.request.path

@@ -7,8 +7,8 @@ from django.db.models import Sum
 from quizes.models import Quiz
 
 class Question(models.Model):
-    text = models.CharField(max_length=200, help_text="Título - 200 caracteres")
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    text = models.CharField(max_length=200, help_text="Título - 200 caracteres")
     created = models.DateTimeField(auto_now_add=True)
     points = models.FloatField(default=0, help_text="Valor da questão")
 

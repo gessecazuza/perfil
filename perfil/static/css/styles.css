@@ -11528,13 +11528,22 @@ header.masthead h1, header.masthead .h1 {
   font-size: 12px;
 }
 
-.marcador-topo{
+/* Definindo a classe .marcador-topo */
+.marcador-topo {
+  font-size: small;
   background-color: var(--bs-gray-500);
   color: #000;
   border: 1px solid black;
   border-radius: 15px;
-  padding: 10px;
+  padding: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px; /* Adicionando espaço acima do formulário */
+  margin-left: 20px;
+  margin-right: 20px;
+  position: relative;
 }
+
+
 
 .marcador-container{
   /*background: royalblue; border: 1px solid #36ae26; */
@@ -11587,12 +11596,10 @@ header.masthead {
   background-attachment: scroll;
   background-size: cover;
 }
-
-.user_card {
-  /** **/
-  height: 350px;
+/** teste de layout */
+.user_card_teste {
+  height: 400px;
   width: 400px;
- 
   margin-top: auto;
   margin-bottom: auto;
   background:  #f4623a; /* #f39c12; 00006f */
@@ -11605,9 +11612,41 @@ header.masthead {
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 5px;
-
 }
 
+/***/
+.user_card {
+  height: auto;
+  width: 400px;
+  margin: auto;
+  margin-top: 25px; /* Adicionando espaço acima do formulário */
+  margin-bottom: 25px; /* Adicionando espaço abaixo do formulário */
+  background:  #f4623a; /* #f39c12; 00006f */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px; /* Aumentando o espaçamento interno */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+  font-size: small;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.input-group.mb-1 {
+  margin-bottom: 10px; /* Espaçamento entre os campos de entrada */
+}
+
+.btn.login_btn {
+  margin-bottom: 10px; /* Espaço abaixo do botão de login */
+}
+
+.float-none {
+  text-align: center;
+}
+/****/
 .register {
   height: 550px;
   width: 500px;
@@ -11638,9 +11677,9 @@ header.masthead {
 
 .brand_logo_container {
   position: relative;
-  height: 70px;
+  height: 40px;
   width: 130px;
-  top: -20px;
+  top: -30px;
   border-radius: 50%;
   background:  #f4623a; /* 60a3bc */
   padding: 10px;

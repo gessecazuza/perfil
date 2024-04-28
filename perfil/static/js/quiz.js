@@ -15,7 +15,6 @@ const notas = [01,02,03,04];
  > Vai em Urls, passa o parâmentro data em json - path('<pk>/data', quiz_data_view, name='quiz-data-view'), */
 const url = window.location.href;
 
-
 //Pega is Id de cada elemento no template
 const quizBox = document.getElementById('quiz-box');
 const scoreBox = document.getElementById('score-box');
@@ -26,13 +25,10 @@ const btnFinaliza = document.getElementById('btnFinaliza');
 const erros = document.getElementById('erro');
 const total = parseInt(document.getElementById('questoes'))
 
-
-
 // Variáveis para SALVAR em bd
 const quizForm = document.getElementById('quiz-form')
 const quizModal = document.getElementById('quizResultModal')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
-
 
 /* Função ajax que recebe os dados em JSON vindas da view quiz_data_view */
 $.ajax({

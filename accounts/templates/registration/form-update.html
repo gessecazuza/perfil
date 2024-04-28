@@ -3,9 +3,52 @@
 {% load bootstrap4 %}
 
 {% block content %}
+
+{% block lgpd %}
+    {% if not preferencias_salvas %} 
+    <div class="modal fade" id="lgpdModal" tabindex="-1" aria-labelledby="lgpdModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lgpdModalLabel">Política de Privacidade</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container"> <!-- px-4 px-lg-5--> 
+                        <p class="text-center"> Utilizamos cookies para melhor experiência. Ao prosseguir estará concordando com os termos de uso. </p> 
+                        <p class="text-center"> Mais detalhes na nossa <a href="javascript:void(0);" onclick="abrirPopup();"> política de privacidade. </a></p>
+                       
+                        <hr>
+                        <form method="POST" action="{% url 'preference:aceitar_cookies' %}">
+                        {% csrf_token %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="essential_cookies" name="essential_cookies" checked disabled>
+                                <label class="form-check-label" for="essential_cookies">Cookies Essenciais (Necessários)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="analytics_cookies" name="analytics_cookies" checked>
+                                <label class="form-check-label" for="analytics_cookies">Cookies de Análise (Tráfego e estatísticas)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="marketing_cookies" name="marketing_cookies" checked>
+                                <label class="form-check-label" for="marketing_cookies">Cookies de Marketing (Exibição de anúncios)</label>
+                            </div> 
+                            <hr>
+                            <div class="justify-content-center text-center">
+                                <button class="btn btn-primary" type="submit"> Aceitar</button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
 <section class="page-section marcador-fundo">
     <div class="container px-4 px-lg-5">
-
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-lg-8 col-xl-6 text-center">
                 <h5 class="badge-dark text-center border"> {{ titulo }} </h5>
@@ -18,14 +61,11 @@
         <div class="row gx-4 gx-lg-5 marcador-cadastro">
             <form id="form-perfil" action="{% url 'atualizar-dados' %}" method="post" class="form" autocomplete="on">
                 {% csrf_token %}
-
                 <div class="row">
                     <div class="col-md-12">
                         {% bootstrap_field form.nome_completo %}
                     </div>
-                   
                 </div>
-
                 <div class="row">
                     <div class="col-md-6">
                         {% bootstrap_field form.nascimento %}
@@ -34,7 +74,6 @@
                         {% bootstrap_field form.raca_cor %}
                     </div>
                 </div>
-
                 <div class="row">
                     
                     <div class="col-md-6">
@@ -45,7 +84,6 @@
                         {% bootstrap_field form.telefone %}
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-6">
                         {% bootstrap_field form.profissao %}
@@ -54,7 +92,6 @@
                         {% bootstrap_field form.pais %}
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="{{ form.personalidade.id_for_label }}">
                         Perfil traçado (Via teste DISC):
@@ -62,7 +99,6 @@
                     <input type="text" name="personalidade" value="{{ form.instance.personalidade }}" 
                         readonly class="form-control" style="background-color: #D2B48C;">
                 </div>
-
                 {% buttons %}
                 <div class="justify-content-center d-flex">
                     <button type="submit" class="btn login_btn"> {{ botao }} </button>
@@ -72,58 +108,11 @@
         </div>
     </div>
     {% bootstrap_javascript jquery='full' %}
+
+    
 </section>
+    
 {% endblock %}
 
-{% block scripts %}
-<!-- Plug-in mascaras do jquery -->
-<script src="{% static 'js/jquery.mask.min.js' %}"> </script>
 
-<script>
-    $(document).ready(function() {
-        /****** Função que valida 9 ou 8 dígitos com DDD **
-        https://igorescobar.github.io/jQuery-Mask-Plugin/docs.html ***/
 
-        var validaFone = function (val) {
-            return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-        },
-        spOptions = {
-            onKeyPress: function(val, e, field, options) {
-                field.mask(validaFone.apply({}, arguments), options);
-            }
-        };
-
-        $("#id_nascimento").mask("00/00/0000");
-        $('#id_telefone').mask(validaFone, spOptions);
-
-        // Validar o formulário antes de enviar
-        $('#form-perfil').submit(function() {
-            if (!validarData($('#id_nascimento').val())) {
-                alert('Por favor, insira uma data válida.');
-                return false; // Impede o envio do formulário se a data for inválida
-            }
-            if (!validarTelefone($('#id_telefone').val())) {
-                alert('Por favor, insira um número de telefone válido.');
-                return false; // Impede o envio do formulário se o telefone for inválido
-            }
-            return true; // Permite o envio do formulário se todos os campos forem válidos
-        });
-
-        // Função para validar a data
-        function validarData(data) {
-            // Implemente sua lógica de validação de data aqui
-            // Por exemplo, você pode usar expressões regulares para verificar o formato da data
-            // e a lógica para determinar se a data é válida
-            return true; // Retorna true se a data for válida, caso contrário, retorna false
-        }
-
-        // Função para validar o telefone
-        function validarTelefone(telefone) {
-            // Implemente sua lógica de validação de telefone aqui
-            // Por exemplo, você pode verificar o comprimento do número de telefone ou o formato
-            // e a lógica para determinar se o número de telefone é válido
-            return true; // Retorna true se o telefone for válido, caso contrário, retorna false
-        }
-    });
-</script>
-{% endblock scripts %}

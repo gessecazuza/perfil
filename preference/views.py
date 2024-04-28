@@ -24,11 +24,9 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import ipaddress  # usado para manipular endereços IP
 
-# usado para manipular endereços IP
-import ipaddress
-
-
+#### Arquivo de politica de privacidade ###
 def politica_privacidade(request):
     return render(request, 'politica.html')
 
@@ -38,7 +36,7 @@ def politica_privacidade(request):
 ######################################################################
 ''' BUSCA FEITA DIRETO NO ARQUIVO SETTINGS.PY
     1. Antes de gravar a preferencia, buscar: 
-    a) User, IP e Aceitou termos;
+    a) User e Aceitou termos;
     2. Se NAO tem, exibir mensagem no template e deixar gravar
         2. SE já tem NÃO exibir o form no index.html'''
 def aceitar_cookies(request):
@@ -52,7 +50,6 @@ def aceitar_cookies(request):
         usuario = request.user
 
         ##### Buscar no banco de dados ####
-        #preferencia = Preference.objects.filter(user=usuario, ipTerminal=ipTerminal, aceitouTermos=True).first()
         preferencia = Preference.objects.filter(user=usuario, aceitouTermos=True).first()
         
         if not preferencia:
@@ -77,8 +74,8 @@ def aceitar_cookies(request):
                 navegador=navegador, idioma=idioma, aceitouTermos=aceitouTermos,
                 analyticsCookies = analytics_cookies, marketingCookies = marketing_cookies 
             )
-            # Redirecionando de volta para o index.html
-        return render(request, 'index.html', {'preferencias_salvas': True})
+        # Redirecionando de volta para a mesm url que a chamou. Se não der, enviar à index
+        return redirect(request.META.get('HTTP_REFERER', 'index'))
     return render(request, 'index.html', {'preferencias_salvas': False})
 
 ###### Carrega os dados do terminal ########

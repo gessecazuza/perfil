@@ -3,26 +3,29 @@
 
 {% block content %}
 
-    <div class="marcador-fundo"> <!-- container-fluid h-100 -->
+        <div class="marcador-fundo"> <!-- container-fluid h-100 -->
             <div class="d-flex justify-content-center h-100">
                 <div class="user_card">
                     <div class="d-flex justify-content-center">
-                        <div class="brand_logo_container"> <!-- brand_logo_container -->
+                        <div class="brand_logo_container">
                             <img src="{% static 'img/logo-200-40-Orange.png' %}" 
                                 alt="Logo" width="90" height="40">
                         </div>
-                    </div>
-                <div> <!-- justify-content-center h-100 -->
-                    <p class="text-white text-center "> Aperfeiçoe suas habilidades com nossos quizes. </p>
-                    <p class="text-white text-center "> Realize já o seu teste DISC </p>
+                    </div> 
+                
+                <div class="justify-content-center h-100"> 
+                    <p class="text-white text-center small"> Aperfeiçoe suas habilidades com nossos quizes. </p>
+                    <p class="text-white text-center small"> Realize já o seu teste DISC </p>
                     <form method="post" class="form" autocomplete="off">
                         {% csrf_token %}
+                        
                         <div class="input-group mb-1">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
 							<input type="text" name="username" class="form-control input_user" value="" placeholder="USUARIO">
 						</div>
+                        
                         <div class="input-group mb-1">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -33,20 +36,20 @@
 
                         <div class="container"> 
                             <div class="float-left"> <!-- float-left -->
-                                <p><a href="{% url 'novo-usuario' %}" class="text-white">Registrar-se...</a></p>
+                              <p>   <a href="{% url 'novo-usuario' %}" class="text-white"> Registrar-se...  </a> </p>
                             </div>
-                            <div class="float-right"> <!-- float-right -->
-                                <p><a href="{% url 'password_reset' %}" class="text-white">Recuperar Senha...</a></p>
-                            </div>                      
+                            <div class="float-right">  <!-- float-right -->
+                              <p>   <a href="{% url 'password_reset' %}" class="text-white"> Recuperar Senha... </a> </p>
+                            </div> 
+                          
+                            <div class="text-center"> 
+                                <p class="text-white small"> <a href="javascript:void(0);" onclick="abrirPopup();"  class="text-white"> Política de privacidade. </a>
+                                </p>   
+                            </div>                         
                         </div>
                     </form>
                 </div>
-                <div class="float-none"> <!-- Remove float para centralizar o link -->
-                    <p class="text-white small"> Ao cadastrar-se o usuário concorda com os termos de uso. </p>
-                    <p class="text-white small"> Detalhes na nossa <a href="javascript:void(0);" onclick="abrirPopup();" class="text-white"> política de privacidade.</a> </p>
-                </div>
             </div>   <!-- FIM USER-ARD --> 
-             
         </div>
     </div>
     
