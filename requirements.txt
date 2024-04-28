@@ -46,6 +46,7 @@ pypdf==3.14.0
 pypng==0.20220715.0
 python-bidi==0.4.2
 python-decouple==3.8
+python-dotenv==1.0.1
 python-ipware==2.0.3
 PyYAML==6.0.1
 qrcode==7.4.2
