@@ -9,9 +9,9 @@ from django.contrib.auth.models import AnonymousUser
 from django_user_agents.utils import get_user_agent
 
 # Base de dados GeoLite2-City.mmdb (pip install geoip2)
-import geoip2.database
-from django.contrib.gis.geoip2 import GeoIP2
-from geoip2.errors import AddressNotFoundError, GeoIP2Error
+#import geoip2.database
+#from django.contrib.gis.geoip2 import GeoIP2
+#from geoip2.errors import AddressNotFoundError, GeoIP2Error
 import socket
 
 # Alternativa para capturar dados da plataforma
