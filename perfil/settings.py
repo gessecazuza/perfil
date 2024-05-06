@@ -35,7 +35,7 @@ from decouple import config                                 # Pacote de configur
 from dotenv import load_dotenv                              # pip install python-dotenv
 
 SECRET_KEY = config('SECRET_KEY')
-ALLOWED_HOSTS  = ["35.94.14.109"] # quizcenter.com.br
+ALLOWED_HOSTS  = ["35.94.14.109", "*"] # quizcenter.com.br
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
