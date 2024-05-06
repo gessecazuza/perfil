@@ -62,7 +62,7 @@ MEDIA_ROOT = BASE_DIR /'media'
 #Para coletar os arquivos css, js e imagens na pasta 'D:\perfil\static'
 # python manage.py collectstatic
 STATICFILES_DIRS = [
-    'perfil/static/'
+    'perfil/static'
 ]
 
 # Application definition
