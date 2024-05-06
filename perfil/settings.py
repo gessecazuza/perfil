@@ -34,26 +34,27 @@ from django.contrib.messages import constants as messages   # Sistema de mensage
 from decouple import config                                 # Pacote de configuração de segurança
 from dotenv import load_dotenv                              # pip install python-dotenv
 
+SECRET_KEY = config('SECRET_KEY')
+ALLOWED_HOSTS: list[str] = ['35.94.14.109'] # quizcenter.com.br
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-SECRET_KEY = config('SECRET_KEY')
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 ## 1. Se não tiver valor, será True. 2. Precisa receber um Booleano  
 DEBUG = config('DEBUG', default=True, cast=bool) 
-ALLOWED_HOSTS: list[str] = ['*'] # quizcenter.com.br
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 # Com a pasta static no mesmo nível da pasta do projeto - D:\perfil\perfil\static
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR /'static'
+STATIC_ROOT = BASE_DIR /'static' # Onde serão coletados os static (python manage.py collectstatic)
 
 #Arquivos de Mídia
 MEDIA_URL = '/media/'
@@ -62,8 +63,9 @@ MEDIA_ROOT = BASE_DIR /'media'
 #Para coletar os arquivos css, js e imagens na pasta 'D:\perfil\static'
 # python manage.py collectstatic
 STATICFILES_DIRS = [
-    'perfil/static'
+    'perfil/static/'
 ]
+print("Estáticos: ", STATICFILES_DIRS)
 
 # Application definition
 INSTALLED_APPS = [
@@ -191,19 +193,11 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-
 #Sistema de autenticação personalizado
 #AUTH_USER_MODEL = 'usuarios.CustomUsuario'
 
 #Enviar email com token via terminal
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-'''
-EMAIL_HOST = 'localhost'
-EMAIL_HOST_USER = 'no-reply@quizcenter.com.br'
-EMAIL_USER_TSL = True
-EMAIL_HOST_PASSWORD = 'minhasenha'
-'''
 
 # SMTP configuraçao de segurança
 EMAIL_HOST = config('EMAIL_HOST')
