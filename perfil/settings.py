@@ -47,7 +47,7 @@ ALLOWED_HOSTS  = ["35.94.14.109", "*"] # quizcenter.com.br
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 ## 1. Se não tiver valor, será True. 2. Precisa receber um Booleano  
-DEBUG = config('DEBUG', default=True, cast=bool) 
+DEBUG = config('DEBUG', default=False, cast=bool) 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
